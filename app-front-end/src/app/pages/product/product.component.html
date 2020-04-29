@@ -1,0 +1,20 @@
+<div class="container m-3" style="background: lightblue;">
+        <div class="row">
+
+                <div class="col" style="width: auto">
+                        <img src="assets/image/productos/{{product.codigo}}.jpg" class="" alt="...">  
+                </div>
+                <div class="col" style="width: auto;">
+                        <h5 class="card-title">{{product.descripcion}}</h5>
+                        <p class="">{{product.proveedor}}</p>
+                        <p class="">Description:</p>
+                        <p class="">{{product.provDescr}}</p>
+                        <p class="card-text">Price: ${{product.precio| number}}</p>
+                        <!--<a class="btn btn-primary btn-lg" type="button" href="javascript:window.history.back()" role="button" style="width: 10rem;"> Regresar</a>
+                        -->
+                        <button class="btn btn-primary btn-lg" type="button" onclick="javascript:history.go(-1);">Regresar</button>
+                        
+                </div>
+        </div>
+ </div>
+
