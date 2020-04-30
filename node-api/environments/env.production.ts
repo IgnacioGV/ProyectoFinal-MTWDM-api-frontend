@@ -12,8 +12,8 @@ export default {
         EXPIRES: '120s'    // 2 min
     },
     MONGODB: {
-        //HOST: '127.0.0.1',
-        HOST: 'api.midominio.com',
+        HOST: '127.0.0.1',
+        //HOST: 'api.midominio.com',
         PORT: 27017,
         USER_NAME: 'dbo-operador',
         USER_PASSWORD: 'operador123',
