@@ -9,7 +9,7 @@ export default {
     },
     TOKEN: {
         SECRET_KEY:'mtwdm_j.ignaciogv_2020',
-        EXPIRES: '120s'    // 2 min
+        EXPIRES: '5min'    // 2 min
     },
     MONGODB: {
         //HOST: '127.0.0.1',

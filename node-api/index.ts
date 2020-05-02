@@ -46,6 +46,12 @@ const mongodb=MongoDBHelper.getInstance(ENV);
 
 app.use(Express.urlencoded({extended: true}));
 app.use(Express.json());
+app.use(function(req: Request, res: Response, next) {
+    res.header("Access-Control-Allow-Origin", "http://app.midominio.com"); 
+    res.header("Access-Control-Allow-Origin", "http://localhost:4200"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+  });
 
 //el primer parametro '/' es la ruta despues del localhost:3000 
 
@@ -112,7 +118,7 @@ app.post('/login', (req:Request, res:Response)=>{
 
 });
 //Get Products
-app.get('/products',token.verify,async(req: Request, res: Response)=>{
+app.get('/products', token.verify,async(req: Request, res: Response)=>{
 
    const products=await mongodb.db.collection('cars').find({}).toArray();
    console.log('API-Productos', products);
@@ -128,7 +134,7 @@ app.get('/products',token.verify,async(req: Request, res: Response)=>{
     );
 });
 //Get Product by Id
-app.get('/product/:id',token.verify,async(req: Request, res: Response)=>{
+app.get('/product/:id', token.verify,async(req: Request, res: Response)=>{
 
     const {id} =req.params;
     const _id=new MongoDBClient.ObjectID(id);
@@ -152,9 +158,10 @@ app.get('/product/:id',token.verify,async(req: Request, res: Response)=>{
 
     const {name} =req.params;
    
-    const category=await mongodb.db.collection('cars').find({'categoria': { $regex: new RegExp("^" + name.toLowerCase(), "i") } }).toArray();
+    const category=await mongodb.db.collection('cars').find({'categoria': { $regex: name.toLowerCase(), '$options':'i' } }).toArray();
+    //db.collection.find({name:{'$regex' : 'string', '$options' : 'i'}})
     console.log('API-Productos', category);
- 
+     
      res.status(200).json(
         apiutils.BodyResponse(
             APIStatusEnum.Success, 'OK', 'La solicitud ha teido exito',
@@ -167,11 +174,11 @@ app.get('/product/:id',token.verify,async(req: Request, res: Response)=>{
  });
 
 //Get Products by name throught search
- app.get('/search/:name',token.verify,async(req: Request, res: Response)=>{
+ app.get('/search/:name', token.verify,async(req: Request, res: Response)=>{
 
     const {name} =req.params;
    
-    const product=await mongodb.db.collection('cars').find({'descripcion':  { $regex : new RegExp(name, "i") }  }).toArray();
+    const product=await mongodb.db.collection('cars').find({'descripcion':  { $regex : name.toLowerCase(), '$options':'i'}  }).toArray();
     console.log('API-Productos', product);
  
      res.status(200).json(

@@ -4,8 +4,8 @@
   "description": "Microservicio de prueba utilizando NodeJS",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node dist/index.js",
-    "dev": "DEBUG=api:* nodemon dist/index.js"
+    "start": " SET NODE_ENV=production node dist/index.js",
+    "dev": "SET DEBUG=api:* & nodemon dist/index.js"
   },
   "keywords": [
     "API",
@@ -29,6 +29,7 @@
     "@types/express": "^4.17.2",
     "@types/jsonwebtoken": "^8.3.8",
     "@types/mongodb": "^3.5.2",
-    "@types/node": "^13.5.0"
+    "@types/node": "^13.5.0",
+    "nodemon": "^2.0.3"
   }
 }

@@ -6,6 +6,7 @@ export interface ProductModel {
 }
 
 export interface ProductModels2 {
+  _id?: string;
   codigo?: string;
   descripcion?: string;
   categoria?: string;
