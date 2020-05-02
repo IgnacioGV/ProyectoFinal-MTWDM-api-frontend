@@ -48,7 +48,7 @@ app.use(Express.urlencoded({extended: true}));
 app.use(Express.json());
 app.use(function(req: Request, res: Response, next) {
     res.header("Access-Control-Allow-Origin", "http://app.midominio.com"); 
-    res.header("Access-Control-Allow-Origin", "http://localhost:4200"); // update to match the domain you will make the request from
+    //res.header("Access-Control-Allow-Origin", "http://localhost:4200"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
   });

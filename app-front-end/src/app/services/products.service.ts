@@ -5,13 +5,11 @@ import { ProductModels2 } from '../models/models';
 import { Observable } from 'rxjs';
 
 //const URL_PRODUCTS='https://mtwdm-front-end.firebaseio.com/productos.json';
-const URL_BASE='http://localhost:5000';
+//const URL_BASE='http://localhost:5000';
+
+const URL_BASE='http://api.midominio.com';
 
 localStorage.setItem('auth_token', '');
-
-//const URL_BASE='http://api.midominio.com';
-
-
 
 /*
     -Login--> Metodo Post (http://api.midominio.com/login)
