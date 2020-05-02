@@ -29,9 +29,21 @@ export class ProductsService {
 
   }
 
-  //getAll(){
-    // return this.http.get(URL_PRODUCTS2);
-  //}
+  getAll(){
+    const headers=new HttpHeaders({
+      'authorization': 'bearer ' + localStorage.getItem('auth_token')
+    });
+     return new Observable(observer=>{
+
+       this.http.get(URL_BASE+'/products', {headers: headers}).subscribe((data:ProductModels2[])=>{
+        let opt=data['result']
+        let res=opt['products']
+        observer.next(res);
+       });
+     });
+     
+     
+  }
 
   getCategory(category: string){
     const headers=new HttpHeaders({
@@ -65,19 +77,25 @@ export class ProductsService {
   
   getSearch(buscar: string){
 
-    const headers=new HttpHeaders({
-      'authorization': 'bearer ' + localStorage.getItem('auth_token')
-    });
+    if(buscar.length>0){
 
-    return new Observable(observer=>{
-
-      this.http.get(URL_BASE+'/search/'+buscar, {headers: headers}).subscribe((data: ProductModels2[])=>{
-        let opt=data['result']
-        let res=opt['product']
-        observer.next(res)
+      const headers=new HttpHeaders({
+        'authorization': 'bearer ' + localStorage.getItem('auth_token')
       });
+  
+      return new Observable(observer=>{
+  
+        this.http.get(URL_BASE+'/search/'+buscar, {headers: headers}).subscribe((data: ProductModels2[])=>{
+          let opt=data['result']
+          let res=opt['product']
+          observer.next(res)
+        });
+  
+      });
+    }else{
+      this.getAll();
+    }
 
-    });
 
   }
 }
