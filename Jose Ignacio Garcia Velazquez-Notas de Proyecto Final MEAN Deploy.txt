@@ -1,0 +1,98 @@
+1-Clonar el proyecto de Github:
+
+-->git clone https://github.com/IgnacioGV/ProyectoFinal-MTWDM-api-frontend.git
+
+2-Entrar a la carperta ProyectoFinal-MTWDM-api-frontend y ejecutar el comando de docker compose para levantar los 3 contenedores
+(Reverse Proxy, App Front End y la API ) con el comando:
+
+-->cd ProyectoFinal-MTWDM-api-frontend
+
+-->docker-compose up --build -d
+
+3-Agregar los dns virtuales al archivo con permisos de administrador hosts
+
+	-En MAC: ubicación (/etc) -->sudo vi/nano /etc/hosts
+
+
+	-En Windows: ubicación (C:\Windows\System32\drivers\etc\)
+
+En el archivo agregar las dns virtuales:
+
+---------------Archivo hosts-------------- 
+192.168.42.129         app.midominio.com
+192.168.42.129         api.midominio.com
+--------------Fin archivo ----------------
+
+3.1-Editar el archivo env.productios.ts alojado en la carpeta node-api->environments y cambiar el HOST por la direccion IP de la maquina virtual
+	  para que nuestra api tenga comunicacion con MongoDB
+
+	  HOST: '192.168.42.129'
+
+Nota: reemplazar por la ip que otorga la maquina virtual.
+
+#Consultar si los dns virtuales estan funcionando
+	1-Escribir en la url de un navegador: app.midominio.com --> debera mostrar el sitio web de los coches
+	2-Con Postman acceder con los siguientes metodos (Post y Get) para ver si la api responde:
+		-Login--> Metodo Post (http://api.midominio.com/login)
+		-Lista de Productos--> Get (http://api.midominio.com/products)
+		-Producto por id --> Get (http://api.midominio.com/product/id)	
+		-Obtener por nombre categorias --> Get (http://api.midominio.com/categories/name)	
+		-Search --> Get (http://api.midominio.com/search/name)		
+
+4-Crear contenedor de MongoDB:
+
+	#Crear directorio en servidor para tener la informacion segura
+
+	-->mkdir /opt/mongodb/data/db
+
+	#Ejecutar el comando:
+
+	-->sudo docker run --name MongoDB-Container --restart=always -d -v /opt/mongodb/data/db:/data/db -p 27017:27017 mongo mongod --auth
+
+    #Entrar al contenedor de MongoDB para crear un usuario:
+
+	-->sudo docker exec -it MongoDB-Container bash
+
+	#Ejecutar:
+
+	-->mongo
+
+	-->use admin
+
+	-->db.createUser({user:"dba-root", pwd:"mongoadminpwd", roles:[{role:"root", db:"admin"}]})
+
+	-->exit
+
+	-->exit
+
+    #Crear restauración de MongoDB
+
+	-->mongorestore --db dbMTWDM --dir ./Mongo/backups/dbMTWDM/ -u "dba-root" --port=27017 --authenticationDatabase "admin
+
+	-->Pedira el password de el usuario dba-root y es mongoadminpwd
+
+	Nota: en caso de que no se reconozca el comando mongorestore es necesario instalar:
+
+	-->npm install mongodb-restore
+
+	#Crear usuario de produccion
+
+	-->sudo docker exec -it MongoDB-Container bash
+
+	-->mongo -u dba-root -p
+
+	-->Pedira password "mongoadminpwd"
+
+	-->use dbMTWDM
+
+	-->db.createUser({user:"dbo-operador", pwd:"operador123", roles:[{role:"readWrite", db:"dbMTWDM"}]})
+
+	#Verificar con Robo 3T si se puede acceder y consultar las colecciones restauradas.
+
+
+    5-Generar un token y almacenarlo en el navegador:
+    
+    	Click derecho-->inspeccionar elemento-->Almacenamiento local-->agregar el token en el key auth_token en la seccion de value
+    	Nota: token sin comillas y dar enter	
+
+
