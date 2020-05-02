@@ -77,7 +77,6 @@ export class ProductsService {
   
   getSearch(buscar: string){
 
-    if(buscar.length>0){
 
       const headers=new HttpHeaders({
         'authorization': 'bearer ' + localStorage.getItem('auth_token')
@@ -90,12 +89,6 @@ export class ProductsService {
           let res=opt['product']
           observer.next(res)
         });
-  
       });
-    }else{
-      this.getAll();
-    }
-
-
   }
 }
